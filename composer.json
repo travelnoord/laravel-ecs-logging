@@ -6,9 +6,7 @@
     "require": {
         "php": "^8.3",
         "monolog/monolog": "^3.0",
-        "illuminate/log": "^11.15|^12.2",
-        "illuminate/http": "11.15|^12.2",
-        "illuminate/contracts": "11.15|^12.2",
+        "laravel/framework": "^11.15|^12.2",
         "ext-json": "*",
         "hamidrezaniazi/pecs": "^2.0"
     },

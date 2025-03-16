@@ -52,8 +52,6 @@ expect()->extend('toContainLine', function (array $expected, string $message = '
         } catch (AssertionFailedError $exception) {
             $throwable = $exception;
         }
-        //
-        //        expect(Arr::undot(expect($line)->json()->value))->dump()->toMatchArray(Arr::undot($expected));
     }
 
     if ($throwable instanceof \Throwable) {

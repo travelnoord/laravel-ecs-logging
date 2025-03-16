@@ -27,7 +27,7 @@ class EcsFormatter extends PecsFormatter
 
         return (new EcsFieldsCollection($fields->values()->all()))
             ->loadInitialFields($pecsLogRecord)
-            ->loadWrappers()->dump();
+            ->loadWrappers();
     }
 
     /**
@@ -116,7 +116,6 @@ class EcsFormatter extends PecsFormatter
         /** @var Collection<string, string|int|float> $labels */
         $labels = $context->whereInstanceOf(Base::class)
             ->pluck('labels')
-            ->dump()
             ->filter()
             /** @phpstan-ignore-next-line */
             ->flatMap(static fn(PairList $list) => $list->toArray());
@@ -133,7 +132,6 @@ class EcsFormatter extends PecsFormatter
         /** @var Collection<int, string|int|float> $tags */
         $tags = $context->whereInstanceOf(Base::class)
             ->pluck('tags')
-            ->dump()
             ->filter()
             /** @phpstan-ignore-next-line */
             ->flatMap(static fn(ValueList $list) => $list->toArray())
