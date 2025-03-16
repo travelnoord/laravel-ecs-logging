@@ -1,0 +1,13 @@
+{
+    "preset": "per",
+    "rules": {
+        "new_with_parentheses": true,
+        "concat_space": {
+            "spacing": "one"
+        },
+        "cast_spaces": {
+            "space": "none"
+        },
+        "not_operator_with_space": false
+    }
+}

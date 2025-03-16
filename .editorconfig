@@ -1,0 +1,18 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+ij_visual_guides = 150
+ij_formatter_tags_enabled = true
+
+[*.php]
+ij_php_align_key_value_pairs = true
+ij_php_align_multiline_array_initializer_expression = true
+
+[*.{yml, yaml, scss, sass}]
+indent_size = 2

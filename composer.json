@@ -1,0 +1,64 @@
+{
+    "name": "travelnoord/laravel-ecs-logging",
+    "license": "proprietary",
+    "description": "A Laravel package for performing logging in an Elastic-compatible format.",
+    "type": "library",
+    "require": {
+        "php": "^8.3",
+        "monolog/monolog": "^3.0",
+        "illuminate/log": "^11.15|^12.2",
+        "illuminate/http": "11.15|^12.2",
+        "illuminate/contracts": "11.15|^12.2",
+        "ext-json": "*",
+        "hamidrezaniazi/pecs": "^2.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^v9.12.0|v10.1.0",
+        "pestphp/pest": "^3.7",
+        "pestphp/pest-plugin-drift": "^3.0",
+        "orchestra/pest-plugin-testbench": "^3.2",
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "1.21.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Travelnoord\\Logging\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Travelnoord\\Logging\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Travelnoord\\Logging\\LogServiceProvider"
+            ],
+            "aliases": {
+                "Log": "Ecs"
+            }
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php vendor/bin/testbench package:discover"
+        ],
+        "ci": [
+            "@composer test",
+            "@composer lint"
+        ],
+        "lint": [
+            "@php vendor/bin/pint",
+            "@php vendor/bin/phpstan --memory-limit=-1 --verbose"
+        ],
+        "test": [
+            "@php vendor/bin/pest"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
