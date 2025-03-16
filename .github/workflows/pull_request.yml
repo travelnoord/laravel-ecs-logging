@@ -1,0 +1,101 @@
+name: Pull Request
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: false
+
+env:
+  minimum_supported_php_version: "8.3"
+  client_extensions: none, mbstring, curl, ctype, dom, simplexml, tokenizer, xml, xmlwriter
+
+jobs:
+  ## Run coding standards and static analysis
+  static_analysis:
+    name: Static analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ env.minimum_supported_php_version }} and tooling
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.minimum_supported_php_version }}
+          extensions: ${{ env.extensions }}
+          ini-values: error_reporting=E_ALL
+          tools: composer:v2, composer-dependency-analyser
+          coverage: none
+
+      # See: https://github.com/shivammathur/setup-php#cache-composer-dependencies
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Check platform
+        run: composer check-platform-reqs
+
+      - name: Check dependencies
+        run: composer-dependency-analyser
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan --verbose
+
+
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ 8.3, 8.4 ]
+        laravel: [ 11.0, 12.0 ]
+
+    name: Test [PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP ${{ matrix.php }} and tooling
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.extensions }}
+          ini-values: error_reporting=E_ALL
+          tools: composer:v2
+          coverage: pcov
+
+      # See: https://github.com/shivammathur/setup-php#cache-composer-dependencies
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer
+
+      - name: Require Laravel Version
+        run: composer require laravel/framework:^${{ matrix.laravel }} --no-update
+
+      - name: Install dependencies
+        run: COMPOSER_PREFER_LOWEST=${{ matrix.prefer-lowest }} composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Execute tests
+        run: vendor/bin/pest --coverage --min=80
