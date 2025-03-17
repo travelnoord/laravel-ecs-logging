@@ -1,0 +1,10 @@
+.idea
+.env
+/build
+/.phpunit.result.cache
+/composer.lock
+/node_modules
+/phpunit.xml
+/phpstan.neon
+/tests/database.sqlite
+/vendor
