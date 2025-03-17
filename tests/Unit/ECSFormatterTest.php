@@ -6,7 +6,7 @@ use Hamidrezaniazi\Pecs\Properties\PairList;
 use Hamidrezaniazi\Pecs\Properties\ValueList;
 use Illuminate\Support\Facades\Log;
 use Travelnoord\Logging\Facades\Ecs;
-use Travelnoord\Logging\Fields\Field;
+use Travelnoord\Logging\Field;
 
 it('formats the log line', function () {
     Log::debug('test');

@@ -13,7 +13,6 @@
 
 use Illuminate\Support\Arr;
 use Illuminate\Testing\Constraints\ArraySubset;
-use PHPUnit\Framework\AssertionFailedError;
 use Travelnoord\Logging\Tests\TestCase;
 
 pest()->extends(TestCase::class)->in('Unit');
@@ -49,7 +48,7 @@ expect()->extend('toContainLine', function (array $expected, string $message = '
             expect($line)->json()->toContainValues($expected, $message);
 
             return;
-        } catch (AssertionFailedError $exception) {
+        } catch (RuntimeException $exception) {
             $throwable = $exception;
         }
     }
@@ -58,7 +57,6 @@ expect()->extend('toContainLine', function (array $expected, string $message = '
         throw $throwable;
     }
 });
-
 
 expect()->extend('toContainValues', function (array $expected, string $message = ''): void {
     $this->toBeArray();

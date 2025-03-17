@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Travelnoord\Logging\Facades\Ecs;
-use Travelnoord\Logging\Fields\Field;
+use Travelnoord\Logging\Field;
 
 use function Orchestra\Testbench\Pest\defineRoutes;
 

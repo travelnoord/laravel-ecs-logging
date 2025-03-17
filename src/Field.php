@@ -1,6 +1,6 @@
 <?php
 
-namespace Travelnoord\Logging\Fields;
+namespace Travelnoord\Logging;
 
 use Hamidrezaniazi\Pecs\Fields\AbstractEcsField;
 use Hamidrezaniazi\Pecs\Fields\Error;
@@ -16,6 +16,9 @@ use Illuminate\Http\Request;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
+use Travelnoord\Logging\Fields\Label;
+use Travelnoord\Logging\Fields\Tag;
+use Travelnoord\Logging\Fields\UserAgent;
 
 class Field
 {
